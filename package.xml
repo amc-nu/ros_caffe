@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ros_caffe</name>
+  <version>0.1.0</version>
+  <description>ROS Wrapper for the deep learning framework Caffe</description>
+
+  <maintainer email="abrahammonrroy@yahoo.com">Abraham Monrroy</maintainer>
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>libgflags-dev</depend>
+  <depend>libgoogle-glog-dev</depend>
+  <depend>protobuf-dev</depend>
+  <depend>hdf5</depend>
+  <depend>leveldb</depend>
+  <depend>snappy</depend>
+  <depend>libopenblas-dev</depend>
+  <depend>libopencv-dev</depend>
+  <!--<depend>nvidia-cuda-dev</depend>--><!--CUDA7.5-->
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>
