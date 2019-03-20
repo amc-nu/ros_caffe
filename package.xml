@@ -2,7 +2,7 @@
 <package format="2">
   <name>ros_caffe</name>
   <version>0.1.0</version>
-  <description>ROS Wrapper for the deep learning framework Caffe</description>
+  <description>ROS Wrapper for the deep learning framework Caffe (SSD)</description>
 
   <maintainer email="abrahammonrroy@yahoo.com">Abraham Monrroy</maintainer>
   <license>Apache 2.0</license>
