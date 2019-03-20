@@ -18,10 +18,6 @@ find_package(Boost REQUIRED COMPONENTS system thread filesystem regex)
 include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
 
-#Threads
-find_package(Threads REQUIRED)
-link_directories(${CMAKE_THREAD_LIBS_INIT})
-
 include(src/caffe/cmake/Modules/FindGFlags.cmake)
 include(src/caffe/cmake/Modules/FindGlog.cmake)
 include(src/caffe/cmake/ProtoBuf.cmake)
