@@ -30,3 +30,23 @@
 *.exe
 *.out
 *.app
+
+.idea
+cmake-build-debug
+
+# ROSBag files
+*.bag
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Autoware Resources
+*.pcd
+*.bag
+*.csv
+
+/.metadata/
