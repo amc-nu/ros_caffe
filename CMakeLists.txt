@@ -77,6 +77,10 @@ if (GFLAGS_FOUND
         caffe_option(CPU_ONLY  "Build Caffe without CUDA support" OFF)
         caffe_option(USE_CUDNN "Build Caffe with cuDNN library support" ON IF NOT CPU_ONLY)
         include(src/caffe/cmake/Cuda.cmake)
+
+        IF ("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "^arm")
+            link_directories(/usr/lib/arm-linux-gnueabihf/tegra)
+        endif ()
     else()
         caffe_option(CPU_ONLY  "Build Caffe without CUDA support" ON)
         add_definitions(-DCPU_ONLY)
