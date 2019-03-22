@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(ros_caffe)
+project(caffe)
 
 add_compile_options(-std=c++11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wall")
@@ -13,7 +13,6 @@ find_package(catkin REQUIRED COMPONENTS
 include(src/caffe/cmake/Utils.cmake)
 
 #Caffe Dependencies
-#Boost
 find_package(Boost REQUIRED COMPONENTS system thread filesystem regex)
 include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
@@ -93,7 +92,7 @@ if (GFLAGS_FOUND
     ## DEPENDS: system dependencies of this project that dependent projects also need
     catkin_package(
       INCLUDE_DIRS src/caffe/include
-      LIBRARIES ros_caffe
+      LIBRARIES caffe
       CATKIN_DEPENDS
       DEPENDS
             GFLAGS
@@ -128,8 +127,8 @@ if (GFLAGS_FOUND
         list(APPEND srcs ${cuda_objs} ${cuda})
     endif()
     configure_file(src/caffe/cmake/Templates/caffe_config.h.in "${PROJECT_BINARY_DIR}/caffe_config.h")
-    add_library(ros_caffe ${srcs})
-    target_link_libraries(ros_caffe proto ${Caffe_LINKER_LIBS})
+    add_library(caffe ${srcs})
+    target_link_libraries(caffe proto ${Caffe_LINKER_LIBS})
 
 
     #############
@@ -137,14 +136,14 @@ if (GFLAGS_FOUND
     #############
 
     ## Mark executables and/or libraries for installation
-    install(TARGETS ros_caffe proto
+    install(TARGETS caffe proto
        ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
        RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
     )
 
     ## Mark cpp header files for installation
-    install(DIRECTORY src/caffe/include/caffe
+    install(DIRECTORY src/caffe/include/
        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
        FILES_MATCHING PATTERN "*.h"
        PATTERN ".svn" EXCLUDE
