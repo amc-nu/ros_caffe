@@ -149,6 +149,9 @@ if (GFLAGS_FOUND
        PATTERN ".svn" EXCLUDE
     )
 
+    install(FILES ${proto_hdrs}
+            DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}/proto)
+
     ## Mark other files for installation (e.g. launch and bag files, etc.)
     # install(FILES
     #   # myfile1
