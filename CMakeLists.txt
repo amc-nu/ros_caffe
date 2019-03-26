@@ -156,8 +156,16 @@ if (GFLAGS_FOUND
 
         ### Python Install
         # scripts
-        file(GLOB python_files src/caffe/python/*.py requirements.txt)
-        install(FILES ${python_files} DESTINATION python)
+        file(GLOB python_files
+                src/caffe/python/*.py
+                src/caffe/python/requirements.txt
+                )
+        install(FILES ${python_files}
+                DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}/python
+                )
+        install(FILES ${proto_python}
+                DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}/python
+                )
 
         # module
         install(DIRECTORY src/caffe/python/caffe
@@ -169,7 +177,9 @@ if (GFLAGS_FOUND
                 )
 
         # _caffe.so (python)
-        install(TARGETS pycaffe DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}/python/caffe)
+        install(TARGETS pycaffe
+                DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}/python/caffe
+                )
     else()
         target_link_libraries(caffe proto ${Caffe_LINKER_LIBS})
     endif()
