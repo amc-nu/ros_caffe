@@ -19,6 +19,7 @@
   <depend>snappy</depend>
   <depend>libopenblas-dev</depend>
   <depend>libopencv-dev</depend>
+  <depend>python-numpy</depend>
   <!--<depend>nvidia-cuda-dev</depend>--><!--CUDA7.5-->
 
 

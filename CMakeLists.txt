@@ -28,6 +28,12 @@ find_package(Protobuf QUIET)
 find_package(HDF5 COMPONENTS HL QUIET)
 find_package(OpenCV REQUIRED)
 
+#PYTHON
+include(src/caffe/cmake/Modules/FindNumPy.cmake)
+find_package(PythonInterp 2.7)
+find_package(PythonLibs 2.7)
+find_package(Boost 1.46 COMPONENTS python)
+
 if (GFLAGS_FOUND
     AND GLOG_FOUND
     AND PROTOBUF_FOUND
@@ -103,6 +109,7 @@ if (GFLAGS_FOUND
             Snappy
             OpenBLAS
             OpenCV
+            Boost
     )
 
     ###########
@@ -128,8 +135,45 @@ if (GFLAGS_FOUND
     endif()
     configure_file(src/caffe/cmake/Templates/caffe_config.h.in "${PROJECT_BINARY_DIR}/caffe_config.h")
     add_library(caffe ${srcs})
-    target_link_libraries(caffe proto ${Caffe_LINKER_LIBS})
 
+    ####PYTHON################
+    if(PYTHONLIBS_FOUND AND NUMPY_FOUND AND Boost_PYTHON_FOUND)
+        set(HAVE_PYTHON TRUE)
+        add_definitions(-DWITH_PYTHON_LAYER)
+        include_directories(SYSTEM ${PYTHON_INCLUDE_DIRS} ${NUMPY_INCLUDE_DIR} ${Boost_INCLUDE_DIRS})
+        list(APPEND Caffe_LINKER_LIBS ${PYTHON_LIBRARIES} ${Boost_LIBRARIES})
+
+        #Add python linker libs to caffe lib
+        target_link_libraries(caffe proto ${Caffe_LINKER_LIBS})
+
+        ## BUILD PYTHON
+        include_directories(${PYTHON_INCLUDE_DIRS} ${NUMPY_INCLUDE_DIR} ${Boost_INCLUDE_DIRS})
+        file(GLOB_RECURSE python_srcs src/caffe/python/*.cpp)
+
+        add_library(pycaffe SHARED ${python_srcs})
+        target_link_libraries(pycaffe caffe ${PYTHON_LIBRARIES} ${Boost_LIBRARIES})
+        set_target_properties(pycaffe PROPERTIES PREFIX "" OUTPUT_NAME "_caffe")
+
+        ### Python Install
+        # scripts
+        file(GLOB python_files src/caffe/python/*.py requirements.txt)
+        install(FILES ${python_files} DESTINATION python)
+
+        # module
+        install(DIRECTORY src/caffe/python/caffe
+                DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}/python
+                FILES_MATCHING
+                PATTERN "*.py"
+                PATTERN "ilsvrc_2012_mean.npy"
+                PATTERN "test" EXCLUDE
+                )
+
+        # _caffe.so (python)
+        install(TARGETS pycaffe DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}/python/caffe)
+    else()
+        target_link_libraries(caffe proto ${Caffe_LINKER_LIBS})
+    endif()
+    #END PYTHON
 
     #############
     ## Install ##
@@ -152,11 +196,5 @@ if (GFLAGS_FOUND
     install(FILES ${proto_hdrs}
             DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}/proto)
 
-    ## Mark other files for installation (e.g. launch and bag files, etc.)
-    # install(FILES
-    #   # myfile1
-    #   # myfile2
-    #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-    # )
 
 endif()
